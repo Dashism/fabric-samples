@@ -24,7 +24,7 @@ services:
       - ./crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
     #adding a link to the second pc peer
     extra_hosts:
-    - "peer1.org1.example.com:10.239.31.14"
+    - "peer1.org1.example.com:172.18.0.3"
     container_name: ca.example.com
     networks:
       - basic
@@ -49,7 +49,7 @@ services:
         - ./crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/:/etc/hyperledger/msp/peerOrg1
     #adding a link to the second pc peer
     extra_hosts:
-    - "peer1.org1.example.com:10.239.31.14"
+    - "peer1.org1.example.com:172.18.0.3"
     networks:
       - basic
 
@@ -88,7 +88,7 @@ services:
         - ./config:/etc/hyperledger/configtx
         #adding a link to the second pc peer
     extra_hosts:
-    - "peer1.org1.example.com:10.239.31.14"
+    - "peer1.org1.example.com:172.18.0.3"
     depends_on:
       - orderer.example.com
       - couchdb
@@ -101,8 +101,8 @@ services:
     # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
     # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
     environment:
-      - COUCHDB_USER=
-      - COUCHDB_PASSWORD=
+      - COUCHDB_USER=root
+      - COUCHDB_PASSWORD=root
     ports:
       - 5984:5984
     networks:
