@@ -1,0 +1,372 @@
+'use strict';
+
+/**
+ * But : Déclarer un évènement de chargement d'expedition(s) dans un conteneur
+ * On lie un conteneur à une liste d'expéditions
+ * 
+ * On fait une query sur les expeditions pour recupérer les expeditions dont le conteneur correspond au conteneur choisi dans le spinner
+ * 
+ * @param {com.capgemini.MaterialLoading} materialLoading
+ * @transaction
+ */
+async function MaterialLoading(materialLoading) {
+   	// ******************************************************************
+    // var who = getCurrentParticipant().getIdentifier();
+
+    let event = getFactory().newEvent('com.capgemini', 'MyTestEvent');
+  
+  	let assetRegistry = await getAssetRegistry('com.capgemini.Expedition');
+	
+  	if(materialLoading.expedition.length!=0){
+    
+      for (i = 0; i<materialLoading.expedition.length; i++){
+          materialLoading.expedition[i].container = materialLoading.container;
+          await assetRegistry.update(materialLoading.expedition[i]);
+      }
+
+      event.transaction = 'materialLoading';
+      event.participant = materialLoading.who;
+      event.container = materialLoading.container;
+      event.why = materialLoading.why;
+      event.when = materialLoading.when;
+      event.where = materialLoading.where;
+      
+      emit(event);
+  }
+}
+
+/**
+ * Setup demo
+ * @param {com.capgemini.MaterialUnloading} materialUnloading
+ * @transaction
+ */
+async function MaterialUnloading(materialUnloading) {
+  const NS = 'com.capgemini';
+  // var who = getCurrentParticipant().getIdentifier();
+  let event = getFactory().newEvent('com.capgemini', 'MyTestEvent');
+  let materialUnloadingRegistry = await getAssetRegistry(NS + '.Expedition');
+
+  
+  for ( let i = 0 ; i<materialUnloading.expedition.length ; i++ ) { 
+  		materialUnloading.expedition[i].container = '';
+    	await materialUnloadingRegistry.update(materialUnloading.expedition[i]);
+  }
+  
+  	event.transaction = 'materialUnloading';
+  	event.participant = materialUnloading.who;
+    event.container = materialUnloading.container;
+  	event.why = materialUnloading.why;
+  	event.when = materialUnloading.when;
+  	event.where = materialUnloading.where;
+  	
+    emit(event);
+
+}
+
+/**
+ * Setup ContainerArrived
+ * @param {com.capgemini.ContainerArrived} containerArrived
+ * @transaction
+ */
+async function ContainerArrived(containerArrived) {
+  const NS = 'com.capgemini';
+  // var who = getCurrentParticipant().getIdentifier();
+  let event = getFactory().newEvent('com.capgemini', 'MyTestEvent');
+  let containerArrivedRegistry = await getAssetRegistry(NS + '.ContainerArrived');
+
+  
+ 
+  	event.transaction = 'ContainerArrived';
+  	event.participant = containerArrived.who;
+  	event.why = containerArrived.why;
+  	event.when = containerArrived.when;
+  	event.where = containerArrived.where;
+  	event.container = containerArrived.container;
+
+    emit(event);
+
+}
+
+
+/**
+ * Setup departConteneur
+ * @param {com.capgemini.departConteneur} departConteneur
+ * @transaction
+ */
+async function departConteneur(departConteneur) {
+  const NS = 'com.capgemini';
+  let event = getFactory().newEvent('com.capgemini', 'MyTestEvent');
+  let departConteneurRegistry = await getAssetRegistry(NS + '.departConteneur');
+
+  	event.transaction = 'departConteneur';
+  	event.participant = departConteneur.who;
+  	event.why = departConteneur.why;
+  	event.when = departConteneur.when;
+  	event.where = departConteneur.where;
+  	event.container = departConteneur.container;
+    emit(event);
+
+}
+
+
+
+
+async function Cargaisons(cargaisons) {
+  const NS = 'com.capgemini';
+  // var who = getCurrentParticipant().getIdentifier();
+  let event = getFactory().newEvent('com.capgemini', 'MyTestEvent');
+  let cargaisonsRegistry = await getAssetRegistry(NS + '.Expedition');
+
+  for ( let i = 0 ; i<cargaisons.expedition.length ; i++ ) { 
+  		cargaisons.expedition[i].container = '';
+    	await cargaisonsRegistry.update(cargaisons.expedition[i]);
+  }
+  
+  	event.transaction = 'cargaisons';
+  	event.participant = cargaisons.who;
+    event.container = cargaisons.container;
+  	event.why = cargaisons.why;
+  	event.when = cargaisons.when;
+  	event.where = cargaisons.where;
+    emit(event);
+
+}
+
+
+
+/**
+ * Setup demo
+ * @param {com.capgemini.MDDeclaration} mdDeclaration
+ * @transaction
+ */
+async function mdDeclaration(mdDeclaration) {
+    const factory = getFactory();
+    const NS = 'com.capgemini';
+
+    // WHO **************************************************************
+    // Get the current participant
+  	var who = getCurrentParticipant().getIdentifier();
+    //var who = getCurrentParticipant();
+/*    // Check to see the current participant role.
+    if (who.getFullyQualifiedType() !== NS + '.Client') {
+        // Throw an error as the current participant is not a client.
+        throw new Error('Current participant is not a client');
+    }*/
+
+    // WHAT **************************************************************  
+    let containerRegistry = await getAssetRegistry(NS + '.Container');
+    let idCreation = mdDeclaration.container['$identifier'];
+    if (await containerRegistry.exists(mdDeclaration.container.idContainer)) {
+        mdDeclaration.container.classMD = mdDeclaration.classMD;
+        await containerRegistry.update(mdDeclaration.container);
+    } else {
+        const container = factory.newResource(NS, 'Container', idCreation);
+        container.classMD = mdDeclaration.classMD;
+        await containerRegistry.addAll([container]);
+    }
+
+
+    console.log('*********AFFICHAGE TEST***************');
+    console.log(mdDeclaration.classMD);
+    containerRegistry.get(mdDeclaration.container.idContainer).then(data => {
+        console.log(data);
+    });
+    console.log(mdDeclaration);
+  	
+    console.log(mdDeclaration.container['$identifier']);
+
+    // WHY ***************************************************************
+    mdDeclaration.why = 'Declaration de la MD appartenant a la classe : ' + mdDeclaration.classMD + ' - ' + mdDeclaration.quantity + ' ' + mdDeclaration.unity;
+
+    // WHEN **************************************************************
+    mdDeclaration.when = mdDeclaration.timestamp.toString();
+  
+      // ******************************************************************
+    let event = getFactory().newEvent('com.capgemini', 'MyTestEvent');
+  	let date = mdDeclaration.timestamp.toString();
+  	let where = mdDeclaration.where;
+  
+  	event.transaction = 'MDDeclaration';
+  	event.participant = who;
+    event.container = mdDeclaration.container.idContainer;
+  	event.why = mdDeclaration.why;
+  	event.when = date;
+  	event.where = where;
+    emit(event);
+  
+  	//let results = await query(selectTransactionsByID,{idContainer:idContainer});
+  	//console.log("results : "+results);
+    // ******************************************************************
+  
+}
+
+/**
+ * Setup demo
+ * @param {com.capgemini.ruleEnforcement} ruleEnforcement
+ * @transaction
+ */
+async function ruleEnforcement(ruleEnforcement) {
+    const factory = getFactory();
+    const NS = 'com.capgemini';
+
+    // Get the current participant
+    var who = getCurrentParticipant();
+    // Check to see the current participant role.
+    /*if (who.getFullyQualifiedType() !== NS + '.Regulator') {
+        // Throw an error as the current participant is not a Regulator.
+        throw new Error('Current participant is not a Regulator');
+    }*/
+    let ruleRegistry = await getAssetRegistry(NS + '.Rule');
+    const rule = factory.newResource(NS, 'Rule', ruleEnforcement.link);
+    rule.startDate = ruleEnforcement.when;
+    rule.endDate = 'Non Défini !';
+    rule.territory = ruleEnforcement.where;
+    rule.classMD = ruleEnforcement.classMD;
+  	rule.URI = ruleEnforcement.URI;
+  	rule.Hash = ruleEnforcement.Hash;
+  	rule.Desc = ruleEnforcement.Desc;
+  	rule.Equipements = ruleEnforcement.Equipements;
+     rule.Pression = ruleEnforcement.Pression;
+    rule.Type = ruleEnforcement.Type;
+    await ruleRegistry.addAll([rule]);
+
+    console.log(ruleEnforcement);
+    ruleEnforcement.why = 'Mise en application de la règle ' + ruleEnforcement.link;
+    ruleEnforcement.when = ruleEnforcement.when;
+}
+/**
+ * Setup demo
+ * @param {com.capgemini.endRuleEnforcement} endruleEnforcement
+ * @transaction
+ */
+async function endruleEnforcement(endruleEnforcement) {
+    const factory = getFactory();
+    const NS = 'com.capgemini';
+  
+    // Get the current participant
+    var who = getCurrentParticipant();
+    // Check to see the current participant role.
+    /*if (who.getFullyQualifiedType() !== NS + '.Regulator') {
+        // Throw an error as the current participant is not a Regulator.
+        throw new Error('Current participant is not a Regulator');
+    }*/
+    let ruleRegistry = await getAssetRegistry(NS + '.Rule');
+    let idLink = endruleEnforcement.rule['$identifier'];
+    if (await ruleRegistry.exists(idLink)) {
+        endruleEnforcement.rule.endDate = endruleEnforcement.when;
+        await ruleRegistry.update(endruleEnforcement.rule);
+    }
+    endruleEnforcement.why = 'fin de mise en application de la règle ' + idLink;
+    endruleEnforcement.where = endruleEnforcement.rule.territory;
+    endruleEnforcement.when = endruleEnforcement.when;
+    console.log(endruleEnforcement);
+}
+
+/**
+ * Setup demo
+ * @param {com.capgemini.ruleVerification} ruleverification
+ * @transaction
+ */
+async function ruleVerification(ruleVerification) {
+    const factory = getFactory();
+    const NS = 'com.capgemini';
+
+    // Get the current participant
+    // var who = getCurrentParticipant().getIdentifier();
+    // Check to see the current participant role.
+    /*if (who.getFullyQualifiedType() !== NS + '.Regulator') {
+        // Throw an error as the current participant is not a Regulator.
+        throw new Error('Current participant is not a Regulator');
+    }*/
+    console.log(ruleVerification);
+    ruleVerification.why = 'Verification de la regle ' + ruleVerification.link +
+        ' au niveau du conteneur ' + ruleVerification.what.idContainer + ': Resultat de control :' +
+        ruleVerification.resultRule + ' -Observation: ' + ruleVerification.observation;
+  
+     	// ******************************************************************
+    let event = getFactory().newEvent('com.capgemini', 'MyTestEvent');
+  	let date = ruleVerification.when;
+  	let where = ruleVerification.where;
+  
+  	event.transaction = 'ruleVerification';
+  	event.participant = ruleVerification.who;
+    event.container = ruleVerification.what.idContainer;
+  	event.why = ruleVerification.why;
+  	event.when = date;
+      event.where = where;
+      event.Desc = ruleVerification.Desc
+    emit(event);
+    // ******************************************************************
+
+}
+/**
+ * Setup demo
+ * @param {com.capgemini.EventExpedition} eventExpedition
+ * @transaction
+ */
+async function EventExpedition(eventExpedition) {
+   	// ******************************************************************
+    // var who = getCurrentParticipant().getIdentifier();
+
+    let event = getFactory().newEvent('com.capgemini', 'MyTestEvent');
+  	const NS = 'com.capgemini';
+  	let eventExpeditionRegistry = await getAssetRegistry(NS + '.Expedition');
+  
+	console.log("testestesssssssttt" ,eventExpeditionRegistry);
+  	if(eventExpedition.expedition.length!=0){
+    
+      for (i = 0; i<eventExpedition.expedition.length; i++){
+          eventExpedition.expedition[i].container = eventExpedition.container;
+          await eventExpeditionRegistry.update(eventExpedition.expedition[i]);
+      }
+
+      event.transaction = 'eventExpedition';
+      event.participant = eventExpedition.who;
+      event.container = eventExpedition.container;
+      event.why = eventExpedition.why;
+      event.when = eventExpedition.when;
+      event.where = eventExpedition.where;
+      emit(event);
+  }
+}
+
+// *********** TESTS REQUETAGE ***************
+/**
+ * Sample transaction
+ * @param {com.capgemini.ContainerHistoryQuery} containerHistoryQuery
+ * @transaction
+ */
+async function containerHistoryQuery(transaction) {
+    const containerId = transaction.containerId
+    const nativeSupport = transaction.nativeSupport;
+
+    const assetRegistry = await getAssetRegistry('com.capgemini.Container')
+
+    const nativeKey = getNativeAPI().createCompositeKey('Asset:com.capgemini.Container', [containerId]);
+    const iterator = await getNativeAPI().getHistoryForKey(nativeKey);
+    let results = [];
+    let res = {done : false};
+    while (!res.done) {
+        res = await iterator.next();
+
+        if (res && res.value && res.value.value) {
+            let val = res.value.value.toString('utf8');
+            if (val.length > 0) {
+                results.push(val);
+            }
+        }
+        if (res && res.done) {
+            try {
+                iterator.close();
+            }
+            catch (err) {
+            }
+        }
+    }
+
+    const event = getFactory().newEvent('com.capgemini', 'ContainerHistoryQueryResults');
+    event.results = results
+    emit(event)
+
+    return results;
+}

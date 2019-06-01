@@ -1,0 +1,39 @@
+/*query selectTransactionsByID {
+  description: "Select all transactions based on the ID of the container in the event"
+  statement:
+      SELECT org.hyperledger.composer.system.HistorianRecord
+          WHERE (eventsEmitted == _$idContainer)
+}*/
+
+query selectHistorianRecords2 {
+  description: "query sur les expeditions pour recupérer celles dont les lieux correspondent à ceux choisis dans les spinners"
+  statement:
+    SELECT com.capgemini.Expedition
+    WHERE (expeditionAddress == _$expeditionAddress AND destinationAddress == _$destinationAddress AND container == '')
+}
+
+query selectHistorianRecords3 {
+  description: "query sur les expeditions pour recupérer celles dont le conteneur correspond au conteneur choisi dans le spinner"
+  statement:
+    SELECT com.capgemini.Expedition
+    WHERE (container == _$container)
+}
+
+query selectHistorianRecords4 {
+  description: "query sur les expeditions pour recupérer celles dont le lieu de départ ou d'arrivée est le lieu choisi dans les spinners"
+  statement:
+    SELECT com.capgemini.Expedition
+    WHERE (destinationAddress == _$site)
+}
+
+query selectHistorianRecords5 {
+  description: "query sur les expeditions pour recupérer celles dont le lieu de départ ou d'arrivée est le lieu choisi dans les spinners"
+  statement:
+    SELECT com.capgemini.MaterialLoading
+  WHERE (expedition CONTAINS (idExpedition == _$id))
+}
+query selectHistorianRecords6 {
+  description: "query sur les expeditions pour recupérer celles dont le lieu de départ ou d'arrivée est le lieu choisi dans les spinners"
+  statement:
+    SELECT com.capgemini.Expedition
+}

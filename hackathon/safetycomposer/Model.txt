@@ -1,0 +1,383 @@
+namespace com.capgemini
+
+/* ---------------- Participants ---------------------------*/ 
+/**
+ * An abstract participant type in this business network
+ */
+abstract participant Person identified by idPerson{
+  o String idPerson
+  o String email 
+  o String password
+  o String firstName 
+  o String lastName
+  o String phone	
+  o String company
+}
+/**
+ * A Client is a type of participant in the network that can send or receive MD
+ */
+participant Client extends Person{
+  o Role role
+}
+/**
+ * A Logisticien is a type of participant in the network that is responsible for the loading/unloading of MD
+ */
+participant Warehouseman extends Person{
+}
+/**
+ * A Transporteur is a type of participant in the network that is responsible for the transport of MD
+ */
+participant Transporter extends Person{
+}
+/**
+ * A Douanier is a type of participant in the network that is responsible for the control of MD
+ */
+participant CustomsOfficer extends Person{
+}
+/**
+ * A ActeurReglementaire is a type of participant in the network that is responsible for the regulation of MD
+ */
+participant Regulator extends Person{
+}
+
+
+/**---------------ASSETS------------------ */
+
+asset Rule identified by link {
+  o String Hash
+  o String link 
+  o String startDate 
+  o String endDate optional
+  o String territory optional
+  o Class classMD optional
+  o String URI optional
+  o String Desc optional
+  o String Equipements optional
+  o String Pression optional
+  o Typologie Type
+}
+
+asset Container identified by idContainer {
+  o String idContainer
+  o Class classMD optional
+}
+
+asset Expedition identified by idExpedition {
+  o String idExpedition
+  o String expeditionAddress
+  o String destinationAddress
+  o String destinationAddressDetails optional
+  o String fullDestAddress optional
+  o String container optional
+  o Class classeMD
+  o String quantity
+  o Unity unity
+  o String dateDeclarationExpedition optional //Date systeme
+}
+
+/** ------------------ENUM-------------- */
+/**
+ * Enum Role allows a client to be either a sender or a recipient
+ */
+enum Role{
+  o sender
+  o recipient
+}  
+
+/**
+ * Enum Unity
+ */
+enum Unity{
+  o Kg
+  o litre
+} 
+
+enum Unity2{
+  o metre
+  o degre
+  o Bar
+} 
+
+/**
+ * Enum Class
+ */
+enum Class{
+ o Classe_1_Matieres_et_objets_explosibles
+ o Classe_2_Gaz
+ o Classe_3_Liquides_inflammables
+ o Classe_4_Matieres_inflammables
+ o Classe_5_1_Matieres_comburantes
+ o Classe_5_2_Peroxydes_organiques
+ o Classe_6_1_Matieres_toxique
+ o Classe_6_2_Matieres_infectieuses
+ o Classe_7_Matieres_radioactives
+ o Classe_8_Matieres_corrosives
+ o Classe_9_Matieres_et_objets_dangereux_divers
+}
+
+/**
+ * Enum ResultRule
+ */
+enum ResultRule{
+  o OK
+  o KO  
+}
+
+/**
+ * Enum Typologie
+ */
+enum Typologie{
+  o SEUIL
+  o POSITION
+  o DISTANCE
+}
+
+/**
+ * Enum Territoire d'application
+ */
+enum Territory{
+  o FR
+  o DE
+  o BE
+  o US
+  o CH
+  o NL
+  o AFRIQUE
+  o ASIE
+  o MONDE
+  o ADR
+}
+
+/**
+ * Enum Positionnement
+ */
+enum Positionnement{
+  o AU_DESSUS
+  o AU_DESSOUS
+  o A_COTE
+}
+
+/**
+ * Enum Site
+ */
+enum Site {
+ o FRBES
+ o FRTLN
+ o FRMRS
+ o FRSML
+ o FRLEH
+ o FRIRK
+ o FRSZI
+ o MQFDF
+ o PLGDY
+ o SNSHG
+ o USNYC
+ o JPOSA
+ o MAPTM
+ o DELTA3
+ o LILLE		
+}
+/**----------------CONCEPTS--------------- */
+
+/*concept WhyMDDeclaration {
+  o Class classMD
+  o String quantity
+  o Unity unity
+}*/
+
+/*abstract concept WhyTransaction {
+  o String link
+  o Class classMD
+}*/
+
+/** ruleEnforcement and endRuleEnforcement*/
+/*concept WhyRule extends WhyTransaction {
+}*/
+
+/** ruleVerification */
+/*concept WhyVerification extends WhyTransaction {
+  o ResultRule resultRule
+    o String observation
+}*/
+
+/**----------------TRANSACTIONS--------------- */
+
+/**
+ * Declaration MD --> se renseigner remplir automatiquement le champ classMD du containeur
+ */
+transaction MDDeclaration { 
+  o Client who optional // par défaut la personne connectée, bien récupérer le role et id (getCurrentIdentity ou getCurrentParticipant)
+  // o String why // Concatenation de chaines "Déclaration de la MD appartenant à la classe [classe] - [quantité] [unité]" --> essayer avec concept dont attributs classe et unité sont des enum pour simuler l'appel à une BD
+  --> Container container // WHAT création d'un conteneur (avec condition pour voir s'il existe)
+//  o WhyMDDeclaration whyMDDeclaration
+  o Class classMD
+  o String quantity
+  o Unity unity
+  o String when optional // Date system et rien d'autre
+  o String where // Coordonnées GPS
+  o String link optional // Lien vers document preuve de déclaration
+  o String why
+}
+
+/**
+ * Declaration Chargement
+ */
+transaction MaterialLoading {
+  	o String who
+	o Expedition[] expedition
+    o String container 
+	o String why optional
+    o String when optional
+	o Site where 
+    o String xGPS optional
+  	o String yGPS optional
+   
+}
+
+/**
+ * Declaration Déchargement
+ */
+transaction MaterialUnloading {
+  	o String who  
+	o Expedition[] expedition
+    o String container
+	o String why optional
+    o String when optional
+	o Site where 
+    o String xGPS optional
+  	o String yGPS optional
+}
+
+/**
+ * Declaration Cargaisons
+ */
+transaction Cargaisons {
+  	o String who  
+	o Expedition[] expedition
+    o String container
+	o String why optional
+    o String when optional
+	o Site where optional
+    o String xGPS optional
+  	o String yGPS optional
+}
+/**
+ * Declaration Arrivage d'un conteneur
+ */
+transaction ContainerArrived {
+  	o String who
+	o String why 
+    o String when
+    o String container
+	o Site where 
+    o String xGPS optional
+  	o String yGPS optional
+}
+/**
+ * Declaration Depart d'un conteneur
+ */
+transaction departConteneur {
+  	o String who
+	o String why 
+    o String when
+    o Site where 
+    o String container
+}
+/**
+ * Mise en application d'une règle
+ */
+transaction ruleEnforcement { 
+  o Person who optional// acteur réglementaire --> prendre par défaut la personne conectée - récupérer id et role
+//  o WhyRule what // lien vers la règle --> allimente enum pour récupérer une liste lors de la verif de règle
+  o String link
+  o Class classMD optional
+  // o String why // "Mise en application de la règle [lien]"
+  o String why optional
+  o String when optional// Date de mise en application (voir format)
+  o Territory where // territoire sur lequel la règle s'applique
+  o String URI
+  o String Hash optional
+  o String Desc
+  o String Equipements optional
+  o String Pression optional
+  o Typologie Type
+
+  
+}
+
+/**
+ * Retrait d'une règle (tester aussi avec 1 seule transaction et une condition sur le why pour renseigner date de fin ou date de début)
+ */
+transaction endRuleEnforcement { 
+  o Person who optional// acteur réglementaire --> prendre par défaut la personne conectée - récupérer id et role
+  --> Rule rule //what
+  // o String why // "Fin mise en application de la règle [lien]"
+  o String why optional
+  o String when optional// Date de fin de mise en application (voir format)
+  o String where optional// territoire sur lequel la règle s'appliquait (a vérifier si on le renseigne par défaut)
+}
+
+/**
+ * Véréfication d'une règle
+ */
+transaction ruleVerification { 
+  o String who optional// acteur réglementaire --> prendre par défaut la personne conectée - récupérer id et role
+  --> Container what // conteneur
+  // o String why // "Vérification de la règle [lien], résultat du contrôle [res], observation :[obs] - résultat du contrôle" concept avec --> Lien de la règle - Résultat du contrôle (enum conforme/non conforme) - Observation
+//  o WhyVerification whyVerification
+  o String link
+  o Class classMD optional
+  o ResultRule resultRule
+  o String observation optional
+  o String why optional
+  o String when optional// Date du controle (saisie)
+  o Site where optional// coordonnées GPS
+  o String datectr
+  o String temps
+  o String container_voisin optional // conteneur voisin
+  o Unity2 unity optional
+  o String distance optional
+  o Positionnement position optional
+  o String valeur optional
+  o String Desc
+  o String xGPS
+  o String yGPS
+  o String RuleURI optional
+
+}
+
+/**
+* Tous les évenements concernant une expédition
+*/
+transaction EventExpedition {
+   o String who
+   o Expedition[] expedition
+   o String typeEvent
+   o String container optional
+   o String why optional
+   o String when optional
+   o String where optional
+   o String xGPS optional
+   o String yGPS optional
+   o String idEvent optional 
+}
+
+// **************************
+event MyTestEvent {
+  	o String transaction
+  	o String participant
+    o String container
+    o String why
+    o String when optional
+    o String where optional
+    o String Desc optional
+    
+}
+
+// *********** TESTS REQUETAGE ***************
+transaction ContainerHistoryQuery {
+  o String containerId
+}
+event ContainerHistoryQueryResults {
+  o String[] results
+}

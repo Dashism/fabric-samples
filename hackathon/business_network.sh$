@@ -1,0 +1,3 @@
+#!/bin/bash
+
+composer network install --card PeerAdmin@hlfv1 --archiveFile my-basic-sample.bna

@@ -1,0 +1,89 @@
+/* ******************************************************************************* */
+/* ******************************* Rules for Admin ******************************* */
+/* ******************************************************************************* */
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.*"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.*"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+/* ******************************************************************************* */
+/* ****************************** Rules for Persons ****************************** */
+/* ******************************************************************************* */
+
+rule PersonsCanAccessSystem {
+    description: "Grants all the participants the right to access the system"
+    participant: "com.capgemini.Person"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule AccessForBasicUser1 {
+    description: "Grant basic user read access to containers"
+    participant: "com.capgemini.Person"
+    operation: ALL
+    resource: "com.capgemini.Container"
+    action: ALLOW
+}
+
+rule AccessForBasicUser2 {
+    description: "Grant basic user read access to rules"
+    participant: "com.capgemini.Person"
+    operation: ALL
+    resource: "com.capgemini.Rule"
+    action: ALLOW
+}
+
+rule historianAccess{
+  description: "Only allow persons to read historian records referencing transactions they submitted."
+  participant(p): "com.capgemini.Person"
+  operation: ALL
+  resource(r): "org.hyperledger.composer.system.HistorianRecord"
+  condition: (r.participantInvoking.getIdentifier() == p.getIdentifier())
+  action: ALLOW
+}
+
+/* ******************************************************************************* */
+/* ****************************** Rules for Clients ****************************** */
+/* ******************************************************************************* */
+
+rule testForRunningMdDeclaration {
+    description: "Allows the client to run the MDDeclaration's transaction"
+    participant: "com.capgemini.Client"
+    operation: ALL
+    resource: "com.capgemini.**"
+    transaction: "com.capgemini.*"
+    action: ALLOW
+}
+rule testForRunningMdDeclaration2 {
+    description: "Allows the client to run the MDDeclaration's transaction"
+    participant: "com.capgemini.Client"
+    operation: ALL
+    resource: "com.capgemini.**"
+    transaction: "com.capgemini.*"
+    action: ALLOW
+}
+/* ******************************************************************************* */
+/* **************************** Rules for Regulators ***************************** */
+/* ******************************************************************************* */
+
+rule testForRunningRuleVerification {
+    description: "Allows the client to run the MDDeclaration's transaction"
+    participant: "com.capgemini.Regulator"
+    operation: ALL
+    resource: "org.hyperledger.composer.**"
+    transaction: "com.capgemini.ruleVerification"
+    action: ALLOW
+}

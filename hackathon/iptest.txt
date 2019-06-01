@@ -1,2 +1,4 @@
 B:10.239.22.76
 J:10.239.31.14
+
+In docker : apt-get update && apt-get install -y iputils-ping
