@@ -4,7 +4,7 @@ networks:
 services:
   peer1.org1.example.com:
     container_name: peer1.org1.example.com
-    image: hyperledger/hackathon-peer
+    image: hyperledger/fabric-peer
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_PEER_ID=peer1.org1.example.com
@@ -29,16 +29,16 @@ services:
         - ./crypto-config/peerOrganizations/org1.example.com/users:/etc/hyperledger/msp/users
         - ./config:/etc/hyperledger/configtx
     extra_hosts:
-    - "orderer.example.com:10.239.22.76"
-    - "peer0.org1.example.com:10.239.22.76"
-    - "ca.example.com:10.239.22.76"
+    - "orderer.example.com:${IPPC1}"
+    - "peer0.org1.example.com:${IPPC1}"
+    - "ca.example.com:${IPPC1}"
     depends_on:
       - couchdb1
     networks:
       - basic
   couchdb1:
     container_name: couchdb1
-    image: hyperledger/hackathon-couchdb
+    image: hyperledger/fabric-couchdb
     environment:
       - COUCHDB_USER=
       - COUCHDB_PASSWORD=

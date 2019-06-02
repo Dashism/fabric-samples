@@ -7,5 +7,3 @@ composer network start --networkName my-basic-sample --networkVersion 0.2.6 --ne
 composer card import --file networkadmin.card
 
 composer network ping --card admin@my-basic-sample
-
-composer-playground -p 8081

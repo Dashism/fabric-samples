@@ -63,6 +63,13 @@ else
  exit 1
 fi
 
+awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt > orderca.crt
+awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt > peerca.crt
+OrdererCACert=`cat orderca.crt`
+PeerCACert=`cat peerca.crt`
+rm orderca.crt
+rm peerca.crt
+
 cat << EOF > DevServer_connection.json
 {
     "name": "hlfv1",
@@ -114,40 +121,40 @@ cat << EOF > DevServer_connection.json
     },
     "orderers": {
         "orderer.example.com": {
-            "url": "grpc://10.239.22.76:7050",
+            "url": "grpc://${IPPC1}:7050",
             "grpcOptions": {
                 "ssl-target-name-override": "orderer.example.com"
             },
             "tlsCACerts": {
-                "pem": "-----BEGIN CERTIFICATE-----\nMIICQjCCAemgAwIBAgIQN+OlJ0enGJr8wdVFfM+DqTAKBggqhkjOPQQDAjBsMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEUMBIGA1UEChMLZXhhbXBsZS5jb20xGjAYBgNVBAMTEXRsc2NhLmV4\nYW1wbGUuY29tMB4XDTE5MDUyODA4MTcwMFoXDTI5MDUyNTA4MTcwMFowbDELMAkG\nA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFu\nY2lzY28xFDASBgNVBAoTC2V4YW1wbGUuY29tMRowGAYDVQQDExF0bHNjYS5leGFt\ncGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABADyZhVgrOXOt4Txd2dJ\nYGo0itcCcvvsS9zRyGHGHJpKVMYwFjQ7KjohVWZ+qiygQkfzQwblKbabZQIRC+U8\n6RyjbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYB\nBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgwo7IIXoo7lpNHMRtG5eC\n6Qr2noVRvQMdLrVpUJOxDcUwCgYIKoZIzj0EAwIDRwAwRAIgKkCbQ7VZLALpMFJq\n1Bp0qPVB7hj4XsWIIJUqX4bv/GQCIChIlyF89oEQm4IsFcDQnwLnzzRc8MyT9LqV\nAyY+Idez\n-----END CERTIFICATE-----\n"
+                "pem": "${OrdererCACert}"
             }
         }
     },
     "peers": {
         "peer0.org1.example.com": {
-            "url": "grpc://10.239.22.76:7051",
-            "eventUrl": "grpc://10.239.22.76:7053",
+            "url": "grpc://${IPPC1}:7051",
+            "eventUrl": "grpc://${IPPC1}:7053",
             "grpcOptions": {
                 "ssl-target-name-override": "peer0.org1.example.com"
             },
             "tlsCACerts": {
-                "pem": "-----BEGIN CERTIFICATE-----\nMIICWDCCAf6gAwIBAgIRAJ95xIOdK/ZbLwsEPUZT8K4wCgYIKoZIzj0EAwIwdjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHzAdBgNVBAMTFnRs\nc2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMTkwNTI4MDgxNzAwWhcNMjkwNTI1MDgx\nNzAwWjB2MQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UE\nBxMNU2FuIEZyYW5jaXNjbzEZMBcGA1UEChMQb3JnMS5leGFtcGxlLmNvbTEfMB0G\nA1UEAxMWdGxzY2Eub3JnMS5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49\nAwEHA0IABE1ZCHFbZwfU4A790R51l7sOhFbyT5VcT4jRJoNfNNf379zBk3qmiwXN\njo3V02glyS25rNtExd8aSKLTeBA+lDCjbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNV\nHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNV\nHQ4EIgQgdyVDyyKcGmveY5ZVBVeQFidVNDniDbtn2jkLNuOowTwwCgYIKoZIzj0E\nAwIDSAAwRQIhAOSGGcsYXNVbMZkkvRz5TtYEe40nf2gLEFAT9owysFUFAiAY/Cvo\ndlvRktEZLXsl0KIM/1DrjRYvCBzrN6iI1toU4A==\n-----END CERTIFICATE-----\n"
+                "pem": "${PeerCACert}"
             }
         },
         "peer1.org1.example.com": {
-            "url": "grpc://10.239.31.14:8051",
-            "eventUrl": "grpc://10.239.31.14:8053",
+            "url": "grpc://${IPPC2}:8051",
+            "eventUrl": "grpc://${IPPC2}:8053",
             "grpcOptions": {
                 "ssl-target-name-override": "peer1.org1.example.com"
             },
             "tlsCACerts": {
-                "pem": "-----BEGIN CERTIFICATE-----\nMIICWDCCAf6gAwIBAgIRAJ95xIOdK/ZbLwsEPUZT8K4wCgYIKoZIzj0EAwIwdjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHzAdBgNVBAMTFnRs\nc2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMTkwNTI4MDgxNzAwWhcNMjkwNTI1MDgx\nNzAwWjB2MQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UE\nBxMNU2FuIEZyYW5jaXNjbzEZMBcGA1UEChMQb3JnMS5leGFtcGxlLmNvbTEfMB0G\nA1UEAxMWdGxzY2Eub3JnMS5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49\nAwEHA0IABE1ZCHFbZwfU4A790R51l7sOhFbyT5VcT4jRJoNfNNf379zBk3qmiwXN\njo3V02glyS25rNtExd8aSKLTeBA+lDCjbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNV\nHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNV\nHQ4EIgQgdyVDyyKcGmveY5ZVBVeQFidVNDniDbtn2jkLNuOowTwwCgYIKoZIzj0E\nAwIDSAAwRQIhAOSGGcsYXNVbMZkkvRz5TtYEe40nf2gLEFAT9owysFUFAiAY/Cvo\ndlvRktEZLXsl0KIM/1DrjRYvCBzrN6iI1toU4A==\n-----END CERTIFICATE-----\n"
+                "pem": "${PeerCACert}"
             }
         }
     },
     "certificateAuthorities": {
         "ca.example.com": {
-            "url": "http://10.239.22.76:7054",
+            "url": "http://${IPPC1}:7054",
             "caName": "ca.example.com",
             "httpOptions": {
                 "verify": false
