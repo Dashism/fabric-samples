@@ -18,14 +18,22 @@ EOF
 
 echo ============= Generate ===========
 ./generate.sh
+
 echo ============= Start ===========
 ./start.sh
+
 echo ============= Docker ===========
 docker ps
+
+echo ============= Pause ===========
+read -p "Press enter to continue ..."
+
 echo ============= PeerAdminCard ===========
 ./createPeerAdminCard.sh
+
 echo ============= BusinessNetwork ===========
 ./business_network.sh
+
 echo ============= SmartContract ===========
 ./smartcontract.sh
 

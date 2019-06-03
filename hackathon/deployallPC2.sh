@@ -18,5 +18,12 @@ EOF
 
 echo ============= Start ===========
 ./start-peer2.sh
+
 echo ============= Docker ===========
 docker ps
+
+echo ============= Pause ===========
+read -p "Press enter to continue ..."
+
+echo ============= SmartContract ===========
+./smartcontract.sh
