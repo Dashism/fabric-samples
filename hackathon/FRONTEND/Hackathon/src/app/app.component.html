@@ -1,0 +1,57 @@
+﻿<!-- nav -->
+<nav class="navbar navbar-expand-md navbar-dark bg-info" *ngIf="currentUser">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto" *ngIf="currentUser.username !== 'AdminSM'">
+            <li class="nav-item active">
+                <a class="nav-item nav-link" routerLink="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-item nav-link" routerLink="/profile"
+                    *ngIf="currentUser.username !== 'AdminSM'">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-item nav-link" routerLink="/projectbuilder"
+                    *ngIf="currentUser.username !== 'AdminSM'">Project Builder</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-item nav-link" routerLink="/currentproject"
+                    *ngIf="currentUser.username !== 'AdminSM'">Project List</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-item nav-link" routerLink="/skillslist" *ngIf="currentUser.username !== 'AdminSM'">Skills
+                    List</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <a class="navbar-brand mx-auto" routerLink="/skillsmarket">Skills Market</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-item nav-link" (click)="logout()">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- main app container -->
+<div class="jumbotron" style="height:100vh;" *ngIf="!currentUser">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 offset-sm-3">
+                <alert></alert>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-sm-6 offset-sm-3" *ngIf="currentUser">
+    <alert></alert>
+    <router-outlet></router-outlet>
+</div>
