@@ -1,3 +1,72 @@
-<p>
-  profile works!
-</p>
+<h1>Here you can create or modify your profile :</h1>
+<br>
+<br>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" formControlName="name" class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+      <div *ngIf="f.name.errors.required">Name is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="lastname">Lastname</label>
+    <input type="lastname" formControlName="lastname" class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && f.lastname.errors }" />
+    <div *ngIf="submitted && f.lastname.errors" class="invalid-feedback">
+      <div *ngIf="f.lastname.errors.required">Lastname is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="birthday">Birthday</label>
+    <input type="date" formControlName="birthday" class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && f.birthday.errors }" />
+    <div *ngIf="submitted && f.birthday.errors" class="invalid-feedback">
+      <div *ngIf="f.birthday.errors.required">Birthday is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="entity">Entity</label>
+    <input type="entity" formControlName="entity" class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && f.entity.errors }" />
+    <div *ngIf="submitted && f.entity.errors" class="invalid-feedback">
+      <div *ngIf="f.entity.errors.required">Entity is required</div>
+    </div>
+  </div>
+  <label for="skill">Skills</label>
+  <div class="input-group">
+    <input type="skill" formControlName="skill" class="form-control width100"
+      [ngClass]="{ 'is-invalid': submitted && f.skill.errors }" />
+    <span class="input-group-btn">
+      <button class="btn btn-info">Add</button>
+    </span>
+    <span class="input-group-btn">
+      <button class="btn btn-danger">Remove</button>
+    </span>
+    <div *ngIf="submitted && f.skill.errors" class="invalid-feedback">
+      <div *ngIf="f.skill.errors.required">Skill is required</div>
+    </div>
+  </div>
+  <label for="skill">Diplomas</label>
+  <div class="input-group">
+    <input type="diploma" formControlName="diploma" class="form-control width100"
+      [ngClass]="{ 'is-invalid': submitted && f.diploma.errors }" />
+    <span class="input-group-btn">
+      <button class="btn btn-info">Add</button>
+    </span>
+    <span class="input-group-btn">
+      <button class="btn btn-danger">Remove</button>
+    </span>
+    <div *ngIf="submitted && f.diploma.errors" class="invalid-feedback">
+      <div *ngIf="f.diploma.errors.required">Diploma is required</div>
+    </div>
+  </div>
+
+  <br>
+  <div class="form-group">
+    <button [disabled]="loading" class="btn btn-primary">Save</button>
+    <img *ngIf="loading" class="pl-3"
+      src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+  </div>
+</form>

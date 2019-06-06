@@ -1,0 +1,92 @@
+{
+   "name": "angular-hackathon-capgemini-poc",
+   "version": "1.0.0",
+   "description": "Hackathon",
+   "engines": {
+      "node": ">=8",
+      "npm": ">=5"
+   },
+   "scripts": {
+      "ng": "ng",
+      "start": "ng serve",
+      "lint": "tslint -c tslint.json 'src/**/*.ts'",
+      "e2e": "ng e2e",
+      "pretest": "npm run lint",
+      "test": "nyc mocha -r ts-node/register src/**/*.spec.ts",
+      "build": "tsc",
+      "build:watch": "tsc -w",
+      "prepublishOnly": "npm run build"
+   },
+   "engineStrict": true,
+   "author": "Capgemini",
+   "license": "Apache-2.0",
+   "private": true,
+   "dependencies": {
+      "@angular/animations": "~7.0.0",
+      "@angular/common": "~7.0.0",
+      "@angular/compiler": "~7.0.0",
+      "@angular/core": "~7.0.0",
+      "@angular/forms": "~7.0.0",
+      "@angular/http": "~7.0.0",
+      "@angular/platform-browser": "~7.0.0",
+      "@angular/platform-browser-dynamic": "~7.0.0",
+      "@angular/router": "~7.0.0",
+      "bootstrap": "^4.3.1",
+      "core-js": "^2.5.4",
+      "fabric-ca-client": "~1.4.0",
+      "fabric-contract-api": "^1.4.1",
+      "fabric-network": "~1.4.0",
+      "rxjs": "~6.3.3",
+      "zone.js": "~0.8.26"
+   },
+   "devDependencies": {
+      "@angular-devkit/build-angular": "^0.13.3",
+      "@angular/cli": "~1.6.5",
+      "@angular/compiler-cli": "^7.2.6",
+      "@angular/language-service": "~7.0.0",
+      "@types/chai": "^4.1.7",
+      "@types/jasmine": "~2.8.8",
+      "@types/jasminewd2": "~2.0.3",
+      "@types/mocha": "^5.2.5",
+      "@types/node": "^10.12.10",
+      "@types/sinon": "^5.0.7",
+      "@types/sinon-chai": "^3.2.1",
+      "chai": "^4.2.0",
+      "codelyzer": "~4.5.0",
+      "jasmine-core": "~2.99.1",
+      "jasmine-spec-reporter": "~4.2.1",
+      "karma": "~3.0.0",
+      "karma-chrome-launcher": "~2.2.0",
+      "karma-coverage-istanbul-reporter": "~2.0.1",
+      "karma-jasmine": "~1.1.2",
+      "karma-jasmine-html-reporter": "^0.2.2",
+      "mocha": "^5.2.0",
+      "nyc": "^13.1.0",
+      "protractor": "~5.4.0",
+      "sinon": "^7.1.1",
+      "sinon-chai": "^3.3.0",
+      "ts-node": "^7.0.1",
+      "tslint": "^5.11.0",
+      "typescript": "^3.1.6"
+   },
+   "nyc": {
+      "extension": [
+         ".ts",
+         ".tsx"
+      ],
+      "exclude": [
+         "coverage/**",
+         "dist/**"
+      ],
+      "reporter": [
+         "text-summary",
+         "html"
+      ],
+      "all": true,
+      "check-coverage": true,
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+   }
+}

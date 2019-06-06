@@ -39,17 +39,16 @@
 </nav>
 
 <!-- main app container -->
-<div class="jumbotron" style="height:100vh;" *ngIf="!currentUser">
+<div class="jumbotron" style="height:100vh;margin-bottom: 0" *ngIf="!currentUser">
     <div class="container">
         <div class="row">
             <div class="col-sm-6 offset-sm-3">
-                <alert></alert>
                 <router-outlet></router-outlet>
+                <alert></alert>
             </div>
         </div>
     </div>
 </div>
-
 
 <div class="col-sm-6 offset-sm-3" *ngIf="currentUser">
     <alert></alert>
