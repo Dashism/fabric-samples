@@ -5,8 +5,9 @@
 import { Skill } from './skill';
 
 export class Project {
+    public projectname: string;
     public description: string;
-	public skillList: Skill[];
+    public skillList: Skill[];
     public startday: Date;
-	public endday: Date;
+    public endday: Date;
 }
