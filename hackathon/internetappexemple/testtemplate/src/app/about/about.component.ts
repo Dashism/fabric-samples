@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
+import { AlertService, AuthenticationService } from '../_services';
 
 @Component({
   selector: 'app-about',
@@ -8,7 +9,7 @@ import * as $ from 'jquery';
 })
 export class AboutComponent implements OnInit {
 
-  constructor() {
+  constructor(private authenticationService: AuthenticationService) {
       this.openMenu();
   };
 
@@ -26,4 +27,7 @@ export class AboutComponent implements OnInit {
         }
     }
 
+    logout(): void {
+        this.authenticationService.logout();
+    }
 }

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import * as $ from 'jquery';
+import { AlertService, AuthenticationService } from '../_services';
 
 
 
@@ -9,7 +10,7 @@ import * as $ from 'jquery';
     styleUrls: ['./shop.component.scss']
 })
 export class ShopComponent implements OnInit {
-    constructor() {
+    constructor(private authenticationService: AuthenticationService) {
         this.openMenu();
 
     };
@@ -25,5 +26,9 @@ export class ShopComponent implements OnInit {
         else {
             $('.collapse').addClass('collapse-active');
         }
+    }
+
+    logout(): void {
+        this.authenticationService.logout();
     }
 }

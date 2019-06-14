@@ -2,22 +2,26 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as $ from 'jquery';
 
-
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations/index';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/internal/operators';
 
+import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { AlertService, UserService, AuthenticationService } from '../_services';
+
 @Component({
-    selector   : 'register',
+    selector: 'register',
     templateUrl: './register.component.html',
-    styleUrls  : ['./register.component.scss'],
-    animations : fuseAnimations
+    styleUrls: ['./register.component.scss'],
+    animations: fuseAnimations
 })
-export class RegisterComponent implements OnInit, OnDestroy
-{
+export class RegisterComponent implements OnInit, OnDestroy {
     registerForm: FormGroup;
     registerFormErrors: any;
+    loading = false;
+    submitted = false;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -25,20 +29,23 @@ export class RegisterComponent implements OnInit, OnDestroy
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
+        private router: Router,
+        private authenticationService: AuthenticationService,
+        private userService: UserService,
+        private alertService: AlertService
 
-    )
-    {
+    ) {
         this.openMenu();
         // Configure the layout
         this._fuseConfigService.config = {
             layout: {
-                navbar : {
+                navbar: {
                     hidden: true
                 },
                 toolbar: {
                     hidden: true
                 },
-                footer : {
+                footer: {
                     hidden: true
                 }
             }
@@ -46,15 +53,21 @@ export class RegisterComponent implements OnInit, OnDestroy
 
         // Set the defaults
         this.registerFormErrors = {
-            name           : {},
-            email          : {},
-            mobile         : {},
-            password       : {},
+            name: {},
+            firstname: {},
+            email: {},
+            mobile: {},
+            username: {},
+            password: {},
             passwordConfirm: {}
         };
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+
+        if (this.authenticationService.currentUserValue) {
+            this.router.navigate(['/']);
+        }
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -64,14 +77,15 @@ export class RegisterComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
 
         this.registerForm = this._formBuilder.group({
-            name           : ['', Validators.required],
-            email          : ['', [Validators.required, Validators.email]],
-            mobile         : ['', [Validators.required,Validators.pattern(/^\+?\d{10}$/)]],
-            password       : ['', [Validators.required, Validators.minLength(6)]],
+            name: ['', Validators.required],
+            firstname: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
+            mobile: ['', [Validators.required, Validators.pattern(/^\+?\d{10}$/)]],
+            username: ['', Validators.required],
+            password: ['', [Validators.required, Validators.minLength(6)]],
             passwordConfirm: ['', [Validators.required, confirmPassword]]
         });
 
@@ -85,14 +99,13 @@ export class RegisterComponent implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
 
-    openMenu(){
+    openMenu() {
         $('body').removeClass('noScroll');
         if ($('.collapse').hasClass('collapse-active')) {
             $('.collapse').removeClass('collapse-active');
@@ -109,12 +122,9 @@ export class RegisterComponent implements OnInit, OnDestroy
     /**
      * On form values changed
      */
-    onRegisterFormValuesChanged(): void
-    {
-        for ( const field in this.registerFormErrors )
-        {
-            if ( !this.registerFormErrors.hasOwnProperty(field) )
-            {
+    onRegisterFormValuesChanged(): void {
+        for (const field in this.registerFormErrors) {
+            if (!this.registerFormErrors.hasOwnProperty(field)) {
                 continue;
             }
 
@@ -124,14 +134,35 @@ export class RegisterComponent implements OnInit, OnDestroy
             // Get the control
             const control = this.registerForm.get(field);
 
-            if ( control && control.dirty && !control.valid )
-            {
+            if (control && control.dirty && !control.valid) {
                 this.registerFormErrors[field] = control.errors;
             }
         }
     }
 
-    onSubmit(){
+    // convenience getter for easy access to form fields
+    get f() { return this.registerForm.controls; }
+
+    onSubmit() {
+        this.submitted = true;
+
+        // stop here if form is invalid
+        if (this.registerForm.invalid) {
+            return;
+        }
+
+        this.loading = true;
+        this.userService.register(this.registerForm.value)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.alertService.success('Registration successful', true);
+                    this.router.navigate(['/login']);
+                },
+                error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                });
     }
 
 
@@ -143,28 +174,23 @@ export class RegisterComponent implements OnInit, OnDestroy
  * @param {AbstractControl} control
  * @returns {{passwordsNotMatch: boolean}}
  */
-function confirmPassword(control: AbstractControl): any
-{
-    if ( !control.parent || !control )
-    {
+function confirmPassword(control: AbstractControl): any {
+    if (!control.parent || !control) {
         return;
     }
 
     const password = control.parent.get('password');
     const passwordConfirm = control.parent.get('passwordConfirm');
 
-    if ( !password || !passwordConfirm )
-    {
+    if (!password || !passwordConfirm) {
         return;
     }
 
-    if ( passwordConfirm.value === '' )
-    {
+    if (passwordConfirm.value === '') {
         return;
     }
 
-    if ( password.value !== passwordConfirm.value )
-    {
+    if (password.value !== passwordConfirm.value) {
         return {
             passwordsNotMatch: true
         };

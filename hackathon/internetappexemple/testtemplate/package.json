@@ -1,23 +1,13 @@
 {
-  "name": "fuse",
-  "version": "6.3.0",
-  "license": "https://themeforest.net/licenses/terms/regular",
+  "name": "hackathon-armageddon",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --open",
-    "start-hmr": "ng serve --configuration hmr --source-map=false --hmr-warning=false",
-    "start-hmr-sourcemaps": "ng serve --configuration hmr --source-map=true --hmr-warning=false",
-    "build": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build --dev",
-    "build-stats": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build --dev --stats-json",
-    "build-prod": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build --prod",
-    "build-prod-stats": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build --prod --stats-json",
+    "start": "ng serve",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "bundle-report": "webpack-bundle-analyzer dist/stats.json",
-    "dist-package": "rm dist/package.json && cp dist-package.json dist/package.json",
-    "packagr": "rm -rf .ng_build dist && ng-packagr -p ng-package.json && npm run dist-package",
-    "deploy": "npm run build && firebase deploy"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

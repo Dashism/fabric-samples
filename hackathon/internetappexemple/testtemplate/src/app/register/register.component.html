@@ -12,19 +12,20 @@
                 <span class="icon icon-bar"></span>
             </button>
             <!-- lOGO -->
-            <a [routerLink]="['/']" class="navbar-brand">Speet</a>
+            <a [routerLink]="['/']" class="navbar-brand">Marché des compétences</a>
         </div>
 
         <!-- MENU LINKS -->
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a [routerLink]="['/']" class="smoothScroll">Home</a></li>
-                <li><a [routerLink]="['/about']" class="smoothScroll">About</a></li>
-                <li><a [routerLink]="['/shop']" class="smoothScroll">Shop</a></li>
-                <li><a [routerLink]="['/contact-us']" class="smoothScroll">Contact Us</a></li>
-                <li><a [routerLink]="['/help']" class="smoothScroll">help</a></li>
-                <li><a [routerLink]="['/login']" class="smoothScroll">Sign IN</a></li>
-                <li class="active"><a [routerLink]="['/register']" class="smoothScroll">Sign Up</a></li>
+                <li><a [routerLink]="['/']" class="smoothScroll">Acceuil</a></li>
+                <li><a [routerLink]="['/about']" class="smoothScroll">A propos</a></li>
+                <li><a [routerLink]="['/shop']" class="smoothScroll">Magasin</a></li>
+                <li><a [routerLink]="['/contact-us']" class="smoothScroll">Nous contacter</a></li>
+                <li><a [routerLink]="['/help']" class="smoothScroll">Aide</a></li>
+                <li><a [routerLink]="['/login']" class="smoothScroll">Se connecter</a></li>
+                <li class="active"><a [routerLink]="['/register']" class="smoothScroll">S'enregistrer</a></li>
+                <li><a (click)="logout()" class="smoothScroll">Se déconnecter</a></li>
             </ul>
         </div>
 
@@ -56,9 +57,17 @@
 
                             <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
                                 <mat-form-field class="col-md-6 col-xs-10">
-                                    <input matInput placeholder="Name" formControlName="name" required>
+                                    <input matInput placeholder="Nom" formControlName="name" required>
                                     <mat-error *ngIf="registerFormErrors.name.required">
-                                        Name is required!
+                                        Le nom est obligatoire !
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
+                                <mat-form-field class="col-md-6 col-xs-10">
+                                    <input matInput placeholder="Prenom" formControlName="firstname" required>
+                                    <mat-error *ngIf="registerFormErrors.firstname.required">
+                                        Le prenom est obligatoire !
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -66,45 +75,54 @@
                                 <mat-form-field class="col-md-6 col-xs-10">
                                     <input matInput placeholder="Email" formControlName="email" required>
                                     <mat-error *ngIf="registerFormErrors.email.required">
-                                        Email is required!
+                                        L'email est obligatoire !
                                     </mat-error>
                                     <mat-error *ngIf="registerFormErrors.email.email">
-                                        Email must be a valid email address!
+                                        L'email doit être valide !
                                     </mat-error>
                                 </mat-form-field>
                             </div>
                             <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
                                 <mat-form-field class="col-md-6 col-xs-10">
-                                    <input matInput placeholder="Mobile" formControlName="mobile" required>
+                                    <input matInput placeholder="Telephone" formControlName="mobile" required>
                                     <mat-error *ngIf="registerFormErrors.mobile.required">
-                                        Mobile is required!
+                                        Le téléphone est obligatoire !
                                     </mat-error>
                                     <mat-error *ngIf="registerFormErrors.mobile.pattern">
-                                        Please enter a 10 digit number!
+                                        Le téléphone doit faire 10 caractères !
                                     </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
                                 <mat-form-field class="col-md-6 col-xs-10">
-                                    <input matInput type="password" placeholder="Password" formControlName="password" required>
+                                    <input matInput placeholder="Nom d'utilisateur" formControlName="username" required>
+                                    <mat-error *ngIf="registerFormErrors.username.required">
+                                        Le nom d'utilisateur est obligatoire !
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
+                                <mat-form-field class="col-md-6 col-xs-10">
+                                    <input matInput type="password" placeholder="Mot de passe" formControlName="password" required>
                                     <mat-error *ngIf="registerFormErrors.password.required">
-                                        Password is required!
+                                        Le mot de passe est obligatoire !
                                     </mat-error>
                                     <mat-error *ngIf="!registerFormErrors.password.required && registerFormErrors.password.minlength">
-                                        Password must be at least 6 characters!
+                                        Le mot de passe doit faire au moins 6 caractères !
                                     </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
                                 <mat-form-field class="col-md-6 col-xs-10">
-                                    <input matInput type="password" placeholder="Password (Confirm)" formControlName="passwordConfirm" required>
+                                    <input matInput type="password" placeholder="Mot de passe (Confirmation)" formControlName="passwordConfirm" required>
                                     <mat-error *ngIf="registerFormErrors.passwordConfirm.required">
-                                        Password confirmation is required!
+                                        La confirmation du mot de passe est obligatoire !
                                     </mat-error>
                                     <mat-error *ngIf="registerFormErrors.passwordConfirm.passwordsNotMatch">
-                                        Passwords must match!
+                                        Les mots de passe doivent êtres les mêmes !
                                     </mat-error>
                                 </mat-form-field>
                             </div>

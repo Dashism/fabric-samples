@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatError} from "@angular/material";
+import {MatError} from '@angular/material';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import * as $ from 'jquery';
+import { AlertService, AuthenticationService } from '../_services';
 
 
 
@@ -16,7 +17,7 @@ export class ContactUsComponent implements OnInit {
     form: FormGroup;
     formErrors: any;
     private _unsubscribeAll: Subject<any>;
-    constructor(private _formBuilder: FormBuilder) {
+    constructor(private authenticationService: AuthenticationService, private _formBuilder: FormBuilder) {
         this.openMenu();
         this.formErrors = {
             name: {},
@@ -72,4 +73,7 @@ export class ContactUsComponent implements OnInit {
         }
     }
 
+    logout(): void {
+        this.authenticationService.logout();
+    }
 }

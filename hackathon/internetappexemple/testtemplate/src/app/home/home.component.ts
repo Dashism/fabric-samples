@@ -15,6 +15,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {Platform} from '@angular/cdk/platform';
 import {IImage} from '../modules/slideshow/IImage';
 import * as $ from 'jquery';
+import { AlertService, AuthenticationService } from '../_services';
 
 import {
     trigger,
@@ -46,8 +47,12 @@ export class HomeComponent implements OnInit {
     fuseConfig: any;
     navigation: any;
     imageUrls: (string | IImage)[] = [
-        {url: 'assets/images/1.png', caption: 'Seeing the world <br/> differently'},
-        {url: 'assets/images/2.png', caption: 'Different world <br/> with different view'},
+        {url: 'assets/images/6.png', caption: 'Bienvenue dans le <br/> marché des compétences !'},
+        {url: 'assets/images/1.png', caption: 'Vous avez des <br/> compétences ?'},
+        {url: 'assets/images/2.png', caption: 'Vous souhaitez rejoindre <br/> un vrai réseau ?'},
+        {url: 'assets/images/3.png', caption: 'Vous avez besoin de renfort ?'},
+        {url: 'assets/images/8.png', caption: 'Vous ne savez pas  <br/> à qui vous adresser ?'},
+        {url: 'assets/images/9.png', caption: 'Tu es à la bonne place !  <br/> Nous avons besoin de toi !'},
     ];
     height: string = '100vh';
     minHeight: string;
@@ -78,6 +83,7 @@ export class HomeComponent implements OnInit {
                 private _fuseSplashScreenService: FuseSplashScreenService,
                 private _fuseTranslationLoaderService: FuseTranslationLoaderService,
                 private _translateService: TranslateService,
+                private authenticationService: AuthenticationService,
                 private _platform: Platform) {
         this.openMenu();
 
@@ -173,5 +179,7 @@ export class HomeComponent implements OnInit {
         }
     }
 
-
+    logout(): void {
+        this.authenticationService.logout();
+    }
 }

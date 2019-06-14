@@ -24,8 +24,9 @@ import {
     // ...
 } from '@angular/animations';
 import { group, animateChild, query, stagger} from '@angular/animations';
-
-
+import { Router } from '@angular/router';
+import { AuthenticationService } from './_services';
+import { User } from './_models';
 
 @Component({
     selector   : 'app',
@@ -51,26 +52,33 @@ import { group, animateChild, query, stagger} from '@angular/animations';
 
 export class AppComponent implements OnInit, OnDestroy
 {
+    currentUser: User;
     fuseConfig: any;
     navigation: any;
 
-    constructor()
-    {
+    constructor(
+        private router: Router,
+        private authenticationService: AuthenticationService
+    ) {
+        this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     }
 
 
     ngOnInit(): void
     {
-
     }
 
     ngOnDestroy(): void
     {
-
     }
 
 
     toggleSidebarOpen(key): void
     {
+    }
+
+    logout(): void {
+        this.authenticationService.logout();
+        this.router.navigate(['/']);
     }
 }

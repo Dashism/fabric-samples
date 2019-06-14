@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import * as $ from 'jquery';
+import { AlertService, AuthenticationService } from '../_services';
 
 
 @Component({
@@ -68,7 +69,7 @@ export class FaqComponent {
         }
         ];
 
-    constructor() {
+    constructor(private authenticationService: AuthenticationService) {
         this.openMenu();
     }
 
@@ -83,4 +84,7 @@ export class FaqComponent {
         }
     }
 
+    logout(): void {
+        this.authenticationService.logout();
+    }
 }
