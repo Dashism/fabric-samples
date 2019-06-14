@@ -28,6 +28,7 @@
       "core-js": "^2.5.4",
       "fabric-ca-client": "~1.4.0",
       "fabric-network": "~1.4.0",
+      "request": "^2.88.0",
       "rxjs": "~6.3.3",
       "typescript": "^3.1.1",
       "zone.js": "~0.8.26"
@@ -82,16 +83,16 @@
       "lines": 100
    },
    "browser": {
-	  "child_process": false,
-	  "constants": false,
+      "child_process": false,
+      "constants": false,
       "crypto": false,
-	  "http": false,
-	  "https": false,		
-	  "net": false,		
-	  "os": false,		
+      "http": false,
+      "https": false,
+      "net": false,
+      "os": false,
       "stream": false,
       "tls": false,
       "tty": false,
       "zlib": false
-    }
+   }
 }
