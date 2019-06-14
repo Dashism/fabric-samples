@@ -82,16 +82,16 @@
       "lines": 100
    },
    "browser": {
-	  "child_process": false,
-	  "constants": false,
+      "child_process": false,
+      "constants": false,
       "crypto": false,
-	  "http": false,
-	  "https": false,		
-	  "net": false,		
-	  "os": false,		
+      "http": false,
+      "https": false,
+      "net": false,
+      "os": false,
       "stream": false,
       "tls": false,
       "tty": false,
       "zlib": false
-    }
+   }
 }
