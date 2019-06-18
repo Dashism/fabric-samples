@@ -27,6 +27,10 @@ export class AboutComponent implements OnInit {
         }
     }
 
+    readLocalStorageValue(key: string): string {
+        return localStorage.getItem(key);
+    }
+
     logout(): void {
         this.authenticationService.logout();
     }

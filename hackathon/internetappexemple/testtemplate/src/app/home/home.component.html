@@ -17,13 +17,21 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a [routerLink]="['/']" class="smoothScroll">Acceuil</a></li>
-                <li><a [routerLink]="['/about']" class="smoothScroll">A propos</a></li>
-                <li><a [routerLink]="['/shop']" class="smoothScroll">Magasin</a></li>
-                <li><a [routerLink]="['/contact-us']" class="smoothScroll">Nous contacter</a></li>
+                <!--<li><a [routerLink]="['/about']" class="smoothScroll">A propos</a></li>-->
                 <li><a [routerLink]="['/help']" class="smoothScroll">Aide</a></li>
-                <li><a [routerLink]="['/login']" class="smoothScroll">Se connecter</a></li>
-                <li><a [routerLink]="['/register']" class="smoothScroll">S'enregistrer</a></li>
-                <li><a (click)="logout()" class="smoothScroll">Se déconnecter</a></li>
+                <div *ngIf="readLocalStorageValue('currentUser');then content else other_content">here is ignored</div>    
+                <ng-template #content>
+                    <li><a [routerLink]="['/user-profile']" class="smoothScroll">Profil</a></li> 
+                    <li><a [routerLink]="['/new-project']" class="smoothScroll">Nouveau projet</a></li>
+                    <li><a [routerLink]="['/user-projects']" class="smoothScroll">Projets</a></li> 
+                    <!--<li><a [routerLink]="['/shop']" class="smoothScroll">Magasin</a></li>-->
+                    <!--<li><a [routerLink]="['/contact-us']" class="smoothScroll">Nous contacter</a></li>-->
+                    <li><a (click)="logout()" class="smoothScroll">Se déconnecter</a></li>
+                </ng-template>
+                <ng-template #other_content>
+                    <li><a [routerLink]="['/register']" class="smoothScroll">Inscrivez-vous</a></li>
+                    <li><a [routerLink]="['/login']" class="smoothScroll">Connectez-vous</a></li>
+                </ng-template>
             </ul> 
         </div>
 

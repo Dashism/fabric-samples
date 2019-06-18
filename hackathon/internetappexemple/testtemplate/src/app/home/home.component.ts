@@ -179,6 +179,10 @@ export class HomeComponent implements OnInit {
         }
     }
 
+    readLocalStorageValue(key: string): string {
+        return localStorage.getItem(key);
+    }
+
     logout(): void {
         this.authenticationService.logout();
     }

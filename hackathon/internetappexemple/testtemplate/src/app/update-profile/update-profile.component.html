@@ -1,6 +1,3 @@
-
-
-
 <div class="navbar custom-navbar navbar-fixed-top" role="navigation">
     <div class="container">
 
@@ -23,7 +20,7 @@
                 <li><a [routerLink]="['/help']" class="smoothScroll">Aide</a></li>
                 <div *ngIf="readLocalStorageValue('currentUser');then content else other_content">here is ignored</div>    
                 <ng-template #content>
-                    <li><a [routerLink]="['/user-profile']" class="smoothScroll">Profil</a></li> 
+                    <li class="active"><a [routerLink]="['/user-profile']" class="smoothScroll">Profil</a></li> 
                     <li><a [routerLink]="['/new-project']" class="smoothScroll">Nouveau projet</a></li>
                     <li><a [routerLink]="['/user-projects']" class="smoothScroll">Projets</a></li> 
                     <!--<li><a [routerLink]="['/shop']" class="smoothScroll">Magasin</a></li>-->
@@ -31,7 +28,7 @@
                     <li><a (click)="logout()" class="smoothScroll">Se déconnecter</a></li>
                 </ng-template>
                 <ng-template #other_content>
-                    <li class="active"><a [routerLink]="['/register']" class="smoothScroll">Inscrivez-vous</a></li>
+                    <li><a [routerLink]="['/register']" class="smoothScroll">Inscrivez-vous</a></li>
                     <li><a [routerLink]="['/login']" class="smoothScroll">Connectez-vous</a></li>
                 </ng-template>
             </ul> 
@@ -47,7 +44,7 @@
         <div class="row align-items-center">
             <div class="col-xl-12 col-sm-12 col-md-12 text-center">
                 <div class="page-title">
-                    <h1>Créer un compte</h1>
+                    <h1>Renseigner le profil</h1>
                 </div>
             </div>
         </div>
@@ -61,12 +58,12 @@
                     <div fxLayout="column">
                         <form class="inq-form" fxLayout="column"
                               fxLayoutAlign="start"
-                              fxFlex="1 0 auto" name="form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                              fxFlex="1 0 auto" name="form" [formGroup]="updateProfileForm" (ngSubmit)="onSubmit()">
 
                             <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
                                 <mat-form-field class="col-md-6 col-xs-10">
                                     <input matInput placeholder="Nom" formControlName="name" required>
-                                    <mat-error *ngIf="registerFormErrors.name.required">
+                                    <mat-error *ngIf="updateProfileFormErrors.name.required">
                                         Le nom est obligatoire !
                                     </mat-error>
                                 </mat-form-field>
@@ -74,69 +71,25 @@
                             <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
                                 <mat-form-field class="col-md-6 col-xs-10">
                                     <input matInput placeholder="Prenom" formControlName="firstname" required>
-                                    <mat-error *ngIf="registerFormErrors.firstname.required">
+                                    <mat-error *ngIf="updateProfileFormErrors.firstname.required">
                                         Le prenom est obligatoire !
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
-                                <mat-form-field class="col-md-6 col-xs-10">
-                                    <input matInput placeholder="Email" formControlName="email" required>
-                                    <mat-error *ngIf="registerFormErrors.email.required">
-                                        L'email est obligatoire !
-                                    </mat-error>
-                                    <mat-error *ngIf="registerFormErrors.email.email">
-                                        Email invalide
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
-                                <mat-form-field class="col-md-6 col-xs-10">
-                                    <input matInput placeholder="Telephone" formControlName="mobile" required>
-                                    <mat-error *ngIf="registerFormErrors.mobile.required">
-                                        Le téléphone est obligatoire !
-                                    </mat-error>
-                                    <mat-error *ngIf="registerFormErrors.mobile.pattern">
-                                        Le téléphone doit faire 10 caractères !
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
+                            
+                            
 
                             <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
                                 <mat-form-field class="col-md-6 col-xs-10">
                                     <input matInput placeholder="Nom d'utilisateur" formControlName="username" required>
-                                    <mat-error *ngIf="registerFormErrors.username.required">
+                                    <mat-error *ngIf="updateProfileFormErrors.username.required">
                                         Le nom d'utilisateur est obligatoire !
                                     </mat-error>
                                 </mat-form-field>
                             </div>
 
-                            <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
-                                <mat-form-field class="col-md-6 col-xs-10">
-                                    <input matInput type="password" placeholder="Mot de passe" formControlName="password" required>
-                                    <mat-error *ngIf="registerFormErrors.password.required">
-                                        Le mot de passe est obligatoire !
-                                    </mat-error>
-                                    <mat-error *ngIf="!registerFormErrors.password.required && registerFormErrors.password.minlength">
-                                        Le mot de passe doit faire au moins 6 caractères !
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                            <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
-                                <mat-form-field class="col-md-6 col-xs-10">
-                                    <input matInput type="password" placeholder="Mot de passe (Confirmation)" formControlName="passwordConfirm" required>
-                                    <mat-error *ngIf="registerFormErrors.passwordConfirm.required">
-                                        La confirmation du mot de passe est obligatoire !
-                                    </mat-error>
-                                    <mat-error *ngIf="registerFormErrors.passwordConfirm.passwordsNotMatch">
-                                        Les mots de passe doivent êtres les mêmes !
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
                             <div class="button-row text-center" fxFlex="100">
-                                <button class="add-back-btn text-right btn-submit" mat-raised-button color="black">S'inscrire</button>
+                                <button class="add-back-btn text-right btn-submit" mat-raised-button color="black">Enregister</button>
                             </div>
                         </form>
                     </div>

@@ -31,6 +31,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AlertComponent } from './_components';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AuthGuard } from './_guards';
+import { NewProjetComponent } from './new-projet/new-projet.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserProjectsComponent } from './user-projects/user-projects.component';
+import { UpdateProfileComponent } from './update-profile/update-profile.component';
+
 
 const appRoutes: Routes = [
     {
@@ -69,6 +74,22 @@ const appRoutes: Routes = [
         path: 'help',
         component: FaqComponent
         , canActivate: [AuthGuard]
+    },
+    {
+        path      : 'new-project',
+        component : NewProjetComponent
+    },
+    {
+        path      : 'user-profile',
+        component : UserProfileComponent
+    },
+    {
+        path      : 'user-projects',
+        component : UserProjectsComponent
+    },
+    {
+        path      : 'update-profile',
+        component : UpdateProfileComponent
     }
 ];
 
@@ -82,6 +103,11 @@ const appRoutes: Routes = [
         LoginComponent,
         RegisterComponent,
         AlertComponent,
+        NewProjetComponent,
+        UserProfileComponent,
+        UserProjectsComponent,
+        UpdateProfileComponent,
+        
 
     ],
     imports: [

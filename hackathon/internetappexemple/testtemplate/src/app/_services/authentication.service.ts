@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
+    loggedin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 
@@ -40,4 +41,20 @@ export class AuthenticationService {
         this.currentUserSubject.next(null);
         this.router.navigate(['/login']);
     }
+
+    isloggedin() {
+        this.http.get('/loggedin')
+          .toPromise()
+          .then((data: any) => {
+            console.log('data', data);
+            if (data) {
+              // login success
+              this.loggedin.next(true);
+            } else {
+              // login fails
+              this.loggedin.next(false);
+            }
+        
+          });
+         }
 }

@@ -163,4 +163,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             $('.collapse').addClass('collapse-active');
         }
     }
+
+    readLocalStorageValue(key: string): string {
+        return localStorage.getItem(key);
+    }
 }

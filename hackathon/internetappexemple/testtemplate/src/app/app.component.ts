@@ -55,12 +55,15 @@ export class AppComponent implements OnInit, OnDestroy
     currentUser: User;
     fuseConfig: any;
     navigation: any;
+    loggedin: boolean;
 
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private authService: AuthenticationService
     ) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+        this.authService.loggedin.subscribe(v => this.loggedin = v);
     }
 
 

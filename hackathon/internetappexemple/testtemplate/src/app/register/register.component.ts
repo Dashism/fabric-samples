@@ -119,6 +119,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+    readLocalStorageValue(key: string): string {
+        return localStorage.getItem(key);
+    }
     /**
      * On form values changed
      */

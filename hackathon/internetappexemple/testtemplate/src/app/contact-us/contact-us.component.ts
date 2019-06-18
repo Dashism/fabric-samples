@@ -73,6 +73,10 @@ export class ContactUsComponent implements OnInit {
         }
     }
 
+    readLocalStorageValue(key: string): string {
+        return localStorage.getItem(key);
+    }
+
     logout(): void {
         this.authenticationService.logout();
     }
