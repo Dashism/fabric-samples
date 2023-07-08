@@ -20,7 +20,7 @@
     "dependencies": {
         "fabric-ca-client": "~1.4.0",
         "fabric-contract-api": "^1.4.1",
-        "fabric-network": "~1.4.0"
+        "fabric-network": "~2.2.18"
     },
     "devDependencies": {
         "@types/chai": "^4.1.7",
